@@ -8,6 +8,7 @@ use App\Http\Requests\PostRequest;
 use App\Post;
 use App\Comment;
 use Auth;
+use Storage; //追加
 
 class PostController extends Controller
 {
@@ -46,12 +47,20 @@ class PostController extends Controller
         //
         $post = new Post; //インスタンスを作成
         $post -> title    = $request -> title; //ユーザー入力のtitleを代入
-        $post -> body     = $request -> body;  //ユーザー入力のbodyを代入
-        $post -> user_id  = Auth::id(); //ログイン中のユーザーidを代入
+        //$post -> body     = $request -> body;  //ユーザー入力のbodyを代入
+        //$post -> user_id  = Auth::id(); //ログイン中のユーザーidを代入
+
+        //s3アップロード開始( image というinputタグから送られてきた情報を $imageに格納)
+        $image = $request->file('image');
+        // バケット䛾`mybucket`フォルダへアップロード
+        $path = Storage::disk('s3')->putFile('mybucket', $image, 'public');
+        // アップロードした画像䛾フルパスを取得
+        $post->image_path = Storage::disk('s3')->url($path);
 
         $post -> save(); //保存
 
-        return redirect()->route('posts.index');
+        return redirect('posts/create');//追加
+        //return redirect()->route('posts.index');
     }
 
     /**

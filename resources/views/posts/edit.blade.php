@@ -19,6 +19,12 @@
                     <label>タイトル</label>
                     <input type="text" class="form-control" value="{{ $post->title }}" name="title">
                 </div>
+                <form action="{{ route('Posts.store') }}" method="post" enctype="multipart/form-data">
+                    <label>image</label>
+                    <div><input type="file" name="image"></div>
+                    {{ csrf_field() }}
+                    <input type="submit" value="作成">
+                    </form>
                 <div class="form-group">
                     <label>内容</label>
                     <textarea class="form-control" rows="5" name="body">{{ $post->body }}</textarea>

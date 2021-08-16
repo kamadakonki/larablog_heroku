@@ -19,6 +19,12 @@
                     <label>タイトル</label>
                     <input type="text" class="form-control" placeholder="タイトルを入力して下さい" name="title">
                 </div>
+                <form action="{{ route('Posts.store') }}" method="post" enctype="multipart/form-data">
+                    <label>image</label>
+                    <div><input type="file" name="image"></div>
+                    {{ csrf_field() }}
+                    <input type="submit" value="作成">
+                    </form>
                 <div class="form-group">
                     <label>内容</label>
                     <textarea class="form-control" placeholder="内容" rows="5" name="body">
